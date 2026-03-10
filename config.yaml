@@ -1,0 +1,65 @@
+# ===========================================================================
+#  Multimodal Molecular Property Prediction — 전체 설정
+# ===========================================================================
+#
+#  사용법:
+#    python main.py train --config config.yaml
+#    python main.py infer  --config config.yaml
+#
+#  CSV 예시:
+#    SMILES,MolWeight,LogP,TPSA,target_mp
+#    CCO,46.07,-0.31,20.23,-114.1
+# ===========================================================================
+
+# ---- 공통 컬럼 설정 --------------------------------------------------------
+data:
+  smiles_col: "SMILES"
+  descriptor_cols:
+    - "MolWeight"
+    - "LogP"
+    - "TPSA"
+  target_cols:
+    - "target_mp"
+
+# ---- 모델 아키텍처 ---------------------------------------------------------
+model:
+  smiles_model_name: "seyonec/ChemBERTa-zinc-base-v1"
+  smiles_max_length: 128
+  smiles_hidden_dim: 768
+
+  descriptor_hidden_dims: [256, 128]
+  descriptor_dropout: 0.1
+  descriptor_use_layernorm: true
+
+  fusion_method: "concat"        # concat | gated | attention
+  fusion_hidden_dim: 256
+
+  prediction_hidden_dims: [128, 64]
+  prediction_dropout: 0.1
+
+  freeze_transformer: false
+
+# ---- 학습 설정 -------------------------------------------------------------
+train:
+  seed: 42
+  batch_size: 32
+  num_epochs: 50
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  max_grad_norm: 1.0
+
+  val_ratio: 0.1
+  test_ratio: 0.1
+
+  checkpoint_dir: "checkpoints"
+  patience: 10
+
+  data_path: "data/Water_solubility_data.csv"
+
+# ---- 추론 설정 -------------------------------------------------------------
+infer:
+  checkpoint_path: "checkpoints/best_model.pt"
+  batch_size: 64
+  data_path: "data/test.csv"
+  output_path: "outputs/predictions.csv"
