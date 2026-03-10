@@ -13,13 +13,14 @@
 
 # ---- 공통 컬럼 설정 --------------------------------------------------------
 data:
-  smiles_col: "SMILES"
+  smiles_col: "cano_smiles"
   descriptor_cols:
-    - "MolWeight"
-    - "LogP"
+    - "MW"
     - "TPSA"
+    - "HBD"
+    - "HBA"
   target_cols:
-    - "target_mp"
+    - "Water Solubility"
 
 # ---- 모델 아키텍처 ---------------------------------------------------------
 model:
