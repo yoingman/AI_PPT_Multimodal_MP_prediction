@@ -1,0 +1,30 @@
+# ===========================================================================
+#  공통 설정: 데이터 컬럼 + 모델 아키텍처
+# ===========================================================================
+
+data:
+  smiles_col: "cano_smiles"
+  descriptor_cols:
+    - "MW"
+    - "TPSA"
+    - "HBD"
+    - "HBA"
+  target_cols:
+    - "Water Solubility"
+
+model:
+  smiles_model_name: "seyonec/ChemBERTa-zinc-base-v1"
+  smiles_max_length: 128
+  smiles_hidden_dim: 768
+
+  descriptor_hidden_dims: [256, 128]
+  descriptor_dropout: 0.1
+  descriptor_use_layernorm: true
+
+  fusion_method: "concat"        # concat | gated | attention
+  fusion_hidden_dim: 256
+
+  prediction_hidden_dims: [128, 64]
+  prediction_dropout: 0.1
+
+  freeze_transformer: false

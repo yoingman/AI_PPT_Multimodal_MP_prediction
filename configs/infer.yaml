@@ -1,0 +1,9 @@
+# ===========================================================================
+#  추론 설정
+# ===========================================================================
+
+infer:
+  checkpoint_path: "checkpoints/best_model.pt"
+  batch_size: 64
+  data_path: "data/test.csv"
+  output_path: "outputs/predictions.csv"

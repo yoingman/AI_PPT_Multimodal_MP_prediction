@@ -72,6 +72,13 @@ class Trainer:
             len(train_df), len(val_df), len(test_df),
         )
 
+        stem = pathlib.Path(tcfg.data_path).stem
+        split_dir = pathlib.Path(tcfg.data_path).parent
+        for tag, split_df in [("train", train_df), ("val", val_df), ("test", test_df)]:
+            out_path = split_dir / f"{stem}_{tag}.csv"
+            split_df.to_csv(out_path, index=False)
+            logger.info("Saved %s split (%d rows) -> %s", tag, len(split_df), out_path)
+
         tokenizer = AutoTokenizer.from_pretrained(self.model_cfg.smiles_model_name)
 
         fill_values = MoleculeDataset.compute_descriptor_fill_values(
